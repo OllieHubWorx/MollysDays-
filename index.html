@@ -17,7 +17,7 @@
 <style>
   :root{
     --bg1:#2a0f3d; --bg2:#5b1d5e; --accent:#ffb86b; --accent2:#5ee7c8; --pink:#ffe27a; --violet:#8b6cff;
-    --ink:#fff8f0; --muted:rgba(255,248,240,.7); --card:rgba(255,255,255,.1); --line:rgba(255,255,255,.2);
+    --ink:#fff8f0; --muted:rgba(255,248,240,.88); --card:rgba(255,255,255,.1); --line:rgba(255,255,255,.2);
   }
   @keyframes drift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-4%,3%) scale(1.08)}100%{transform:translate(0,0) scale(1)}}
   .glow{position:fixed;border-radius:50%;filter:blur(70px);opacity:.75;pointer-events:none;z-index:0;animation:drift 18s ease-in-out infinite}
@@ -56,50 +56,50 @@
   .days{font-family:Fraunces,serif;font-weight:600;font-size:104px;line-height:1.05;letter-spacing:-2px;padding:0 .12em;
         background:linear-gradient(180deg,#fff 20%,#ffd9a8 60%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent;
         filter:drop-shadow(0 6px 24px rgba(255,160,90,.35))}
-  .days-label{font-size:15px;color:var(--muted);margin-top:4px;letter-spacing:.4px}
-  .live{font-variant-numeric:tabular-nums;font-size:14px;color:var(--muted);margin-top:4px}
-  .since{font-size:14px;color:var(--muted);margin-top:14px}
-  .since b{color:var(--ink);font-weight:500}
+  .days-label{font-size:17px;font-weight:700;color:var(--accent2);margin-top:4px;letter-spacing:.6px}
+  .live{font-variant-numeric:tabular-nums;font-size:14px;font-weight:600;color:var(--ink);margin-top:4px}
+  .since{font-size:15px;font-weight:500;color:var(--ink);margin-top:14px}
+  .since b{color:var(--accent);font-weight:700}
   .msg{position:relative;font-family:Fraunces,serif;font-style:italic;font-size:21px;margin:22px auto 0;padding:20px 24px 22px;line-height:1.4;color:var(--ink);
        background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.07));border:1px solid var(--line);border-radius:18px;backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,.18)}
   #msg:before,#msg:after{font-family:Fraunces,serif;font-style:normal;font-weight:900;font-size:1.9em;line-height:0;vertical-align:-.38em;color:var(--accent)}
   #msg:before{content:'\201C';margin-right:5px}
   #msg:after{content:'\201D';margin-left:4px}
   .msg .by{display:block;font-family:Inter,system-ui,sans-serif;font-style:normal;font-weight:600;font-size:13px;letter-spacing:.4px;color:var(--accent);margin-top:12px}
-  .msg .tag{display:block;font-family:Inter,system-ui,sans-serif;font-style:normal;font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-  .pill{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 16px;border-radius:99px;font-size:14px;
+  .msg .tag{display:block;font-family:Inter,system-ui,sans-serif;font-style:normal;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--accent2);margin-bottom:8px}
+  .pill{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 16px;border-radius:99px;font-size:15px;font-weight:600;
         background:linear-gradient(135deg,rgba(94,231,200,.22),rgba(255,184,107,.22));border:1px solid var(--line);backdrop-filter:blur(10px)}
-  .pill b{font-weight:600;color:var(--accent)}
+  .pill b{font-weight:800;color:var(--pink)}
   .pill .pd{width:8px;height:8px;border-radius:50%;background:var(--accent2);box-shadow:0 0 10px var(--accent2)}
   .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:26px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 8px;backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,.18)}
   .card:nth-child(1) .n{color:var(--accent2)}
   .card:nth-child(2) .n{color:var(--accent)}
   .card:nth-child(3) .n{color:var(--pink)}
-  .card .n{font-family:Fraunces,serif;font-weight:600;font-size:28px;line-height:1}
-  .card .l{font-size:12px;color:var(--muted);margin-top:6px}
+  .card .n{font-family:Fraunces,serif;font-weight:900;font-size:32px;line-height:1}
+  .card .l{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--ink);margin-top:8px}
   .next{margin-top:22px;background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.06));border:1px solid var(--line);border-radius:18px;padding:16px;text-align:left;backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,.18)}
-  .next .t{font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)}
-  .next .v{font-family:Fraunces,serif;font-size:22px;margin-top:4px}
+  .next .t{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent2)}
+  .next .v{font-family:Fraunces,serif;font-weight:900;font-size:30px;margin-top:4px;color:var(--pink);text-shadow:0 2px 16px rgba(255,184,107,.45)}
   .bar{height:8px;background:var(--line);border-radius:99px;margin-top:12px;overflow:hidden}
   .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent),var(--pink));box-shadow:0 0 12px rgba(255,184,107,.6);border-radius:99px;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
-  .next .s{font-size:13px;color:var(--muted);margin-top:8px}
+  .next .s{font-size:14px;font-weight:600;color:var(--ink);margin-top:10px}
   .miles{margin-top:22px;text-align:left}
-  .miles .t{font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .miles .t{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent2);margin-bottom:10px}
   .mile{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
   .mile:last-child{border-bottom:1px solid var(--line)}
-  .dot{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;color:#0f1f2b}
+  .dot{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,226,122,.55);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;color:#0f1f2b}
   .mile.done .dot{background:linear-gradient(135deg,var(--accent2),var(--accent));border-color:transparent;box-shadow:0 0 10px rgba(94,231,200,.5)}
-  .mile .name{flex:1;font-size:15px}
-  .mile.done .name{color:var(--ink)}
-  .mile:not(.done) .name{color:var(--muted)}
-  .mile .when{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
-  .foot{margin-top:30px;font-size:12px;color:var(--muted)}
+  .mile .name{flex:1;font-family:Fraunces,serif;font-weight:900;font-size:19px;letter-spacing:.2px}
+  .mile.done .name{color:var(--accent2);text-shadow:0 0 14px rgba(94,231,200,.45)}
+  .mile:not(.done) .name{color:var(--ink)}
+  .mile .when{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+  .foot{margin-top:30px;font-size:15px;font-weight:600;color:var(--ink)}
   @media (max-width:380px){.ring-wrap{width:260px;height:260px}.days{font-size:88px}}
   .note{margin:0 0 22px;padding:20px 22px;border-radius:18px;text-align:center;background:linear-gradient(135deg,rgba(255,138,60,.22),rgba(255,226,122,.14));border:1px solid rgba(255,184,107,.4);box-shadow:0 8px 30px rgba(0,0,0,.18)}
-  .note .nt{font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .note .nt{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
   .note .nb{font-family:Fraunces,serif;font-style:italic;font-size:23px;line-height:1.35;color:var(--ink)}
-  .note .nf{margin-top:10px;font-weight:600;font-size:14px;color:var(--accent)}
+  .note .nf{margin-top:10px;font-weight:800;font-size:16px;color:var(--pink)}
   .sos-btn{margin-top:14px;background:none;border:1px solid var(--line);color:var(--muted);font:500 13px Inter,system-ui,sans-serif;padding:9px 16px;border-radius:99px;cursor:pointer}
   .sos-btn:hover{color:var(--ink);border-color:rgba(255,255,255,.45)}
   .sos{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:calc(24px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));overflow-y:auto;background:rgba(20,8,32,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
