@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Molly's days</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Molly's days">
+<meta name="theme-color" content="#2a0f3d">
+<meta name="robots" content="noindex, nofollow">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,900;1,9..144,400;1,9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#2a0f3d; --bg2:#5b1d5e; --accent:#ffb86b; --accent2:#5ee7c8; --pink:#ffe27a; --violet:#8b6cff;
+    --ink:#fff8f0; --muted:rgba(255,248,240,.7); --card:rgba(255,255,255,.1); --line:rgba(255,255,255,.2);
+  }
+  @keyframes drift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-4%,3%) scale(1.08)}100%{transform:translate(0,0) scale(1)}}
+  .glow{position:fixed;border-radius:50%;filter:blur(70px);opacity:.75;pointer-events:none;z-index:0;animation:drift 18s ease-in-out infinite}
+  .g1{width:520px;height:520px;left:-160px;top:-140px;background:#ff5f9e}
+  .g2{width:460px;height:460px;right:-140px;top:30%;background:#8b6cff;animation-delay:-6s}
+  .g3{width:520px;height:520px;left:10%;bottom:-220px;background:#ff9a3c;animation-delay:-12s}
+  .g4{width:360px;height:360px;right:5%;bottom:5%;background:#5ee7c8;opacity:.45;animation-delay:-3s}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  html{background:#2a0f3d}
+  body{
+    font-family:Inter,system-ui,sans-serif;color:var(--ink);
+    background:#2a0f3d;
+    min-height:100%;display:flex;flex-direction:column;align-items:center;
+    padding:calc(28px + env(safe-area-inset-top)) calc(18px + env(safe-area-inset-right)) calc(48px + env(safe-area-inset-bottom)) calc(18px + env(safe-area-inset-left));
+    overflow-x:hidden;
+  }
+  body:before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(160deg,#1b0b2e 0%,var(--bg1) 35%,var(--bg2) 70%,#8a2a5a 100%)}
+  .stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+  .wrap{position:relative;z-index:1;width:100%;max-width:520px;text-align:center}
+  h1{margin-top:4px;line-height:1}
+  .t-small{display:inline-block;font-family:Fraunces,serif;font-style:italic;font-weight:700;font-size:38px;letter-spacing:.3px;line-height:1.1;padding:0 6px;
+    background:linear-gradient(90deg,#ff8a3c,#ffb86b,#ffe27a);-webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 2px 14px rgba(255,138,60,.6))}
+  .t-big{display:block;font-family:Fraunces,serif;font-weight:900;font-size:clamp(50px,15vw,78px);letter-spacing:-1.5px;padding:0 .12em;text-transform:uppercase;line-height:.92;margin-top:0;
+    background:linear-gradient(90deg,#5ee7c8,#ffe27a,#ffb86b,#ffe27a,#5ee7c8);background-size:200% 100%;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:sweep 6s linear infinite;filter:drop-shadow(0 4px 22px rgba(255,184,107,.5))}
+  @keyframes sweep{to{background-position:200% 0}}
+  .ring-wrap{position:relative;width:300px;height:300px;margin:26px auto 10px}
+  .ring-wrap svg{position:absolute;inset:0;transform:rotate(-90deg)}
+  .ring-bg{fill:none;stroke:rgba(255,255,255,.16);stroke-width:12}
+  .ring-fg{fill:none;stroke:url(#grad);stroke-width:12;stroke-linecap:round;filter:drop-shadow(0 0 10px rgba(255,184,107,.7));transition:stroke-dashoffset 1.2s cubic-bezier(.2,.8,.2,1)}
+  .centre{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .days{font-family:Fraunces,serif;font-weight:600;font-size:104px;line-height:1.05;letter-spacing:-2px;padding:0 .12em;
+        background:linear-gradient(180deg,#fff 20%,#ffd9a8 60%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent;
+        filter:drop-shadow(0 6px 24px rgba(255,160,90,.35))}
+  .days-label{font-size:15px;color:var(--muted);margin-top:4px;letter-spacing:.4px}
+  .live{font-variant-numeric:tabular-nums;font-size:14px;color:var(--muted);margin-top:4px}
+  .since{font-size:14px;color:var(--muted);margin-top:14px}
+  .since b{color:var(--ink);font-weight:500}
+  .msg{position:relative;font-family:Fraunces,serif;font-style:italic;font-size:21px;margin:22px auto 0;padding:20px 24px 22px;line-height:1.4;color:var(--ink);
+       background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.07));border:1px solid var(--line);border-radius:18px;backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,.18)}
+  #msg:before,#msg:after{font-family:Fraunces,serif;font-style:normal;font-weight:900;font-size:1.9em;line-height:0;vertical-align:-.38em;color:var(--accent)}
+  #msg:before{content:'\201C';margin-right:5px}
+  #msg:after{content:'\201D';margin-left:4px}
+  .msg .by{display:block;font-family:Inter,system-ui,sans-serif;font-style:normal;font-weight:600;font-size:13px;letter-spacing:.4px;color:var(--accent);margin-top:12px}
+  .msg .tag{display:block;font-family:Inter,system-ui,sans-serif;font-style:normal;font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .pill{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 16px;border-radius:99px;font-size:14px;
+        background:linear-gradient(135deg,rgba(94,231,200,.22),rgba(255,184,107,.22));border:1px solid var(--line);backdrop-filter:blur(10px)}
+  .pill b{font-weight:600;color:var(--accent)}
+  .pill .pd{width:8px;height:8px;border-radius:50%;background:var(--accent2);box-shadow:0 0 10px var(--accent2)}
+  .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:26px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 8px;backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,.18)}
+  .card:nth-child(1) .n{color:var(--accent2)}
+  .card:nth-child(2) .n{color:var(--accent)}
+  .card:nth-child(3) .n{color:var(--pink)}
+  .card .n{font-family:Fraunces,serif;font-weight:600;font-size:28px;line-height:1}
+  .card .l{font-size:12px;color:var(--muted);margin-top:6px}
+  .next{margin-top:22px;background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.06));border:1px solid var(--line);border-radius:18px;padding:16px;text-align:left;backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,.18)}
+  .next .t{font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)}
+  .next .v{font-family:Fraunces,serif;font-size:22px;margin-top:4px}
+  .bar{height:8px;background:var(--line);border-radius:99px;margin-top:12px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent),var(--pink));box-shadow:0 0 12px rgba(255,184,107,.6);border-radius:99px;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+  .next .s{font-size:13px;color:var(--muted);margin-top:8px}
+  .miles{margin-top:22px;text-align:left}
+  .miles .t{font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .mile{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+  .mile:last-child{border-bottom:1px solid var(--line)}
+  .dot{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;color:#0f1f2b}
+  .mile.done .dot{background:linear-gradient(135deg,var(--accent2),var(--accent));border-color:transparent;box-shadow:0 0 10px rgba(94,231,200,.5)}
+  .mile .name{flex:1;font-size:15px}
+  .mile.done .name{color:var(--ink)}
+  .mile:not(.done) .name{color:var(--muted)}
+  .mile .when{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .foot{margin-top:30px;font-size:12px;color:var(--muted)}
+  @media (max-width:380px){.ring-wrap{width:260px;height:260px}.days{font-size:88px}}
+  .note{margin:0 0 22px;padding:20px 22px;border-radius:18px;text-align:center;background:linear-gradient(135deg,rgba(255,138,60,.22),rgba(255,226,122,.14));border:1px solid rgba(255,184,107,.4);box-shadow:0 8px 30px rgba(0,0,0,.18)}
+  .note .nt{font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .note .nb{font-family:Fraunces,serif;font-style:italic;font-size:23px;line-height:1.35;color:var(--ink)}
+  .note .nf{margin-top:10px;font-weight:600;font-size:14px;color:var(--accent)}
+  .sos-btn{margin-top:14px;background:none;border:1px solid var(--line);color:var(--muted);font:500 13px Inter,system-ui,sans-serif;padding:9px 16px;border-radius:99px;cursor:pointer}
+  .sos-btn:hover{color:var(--ink);border-color:rgba(255,255,255,.45)}
+  .sos{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:calc(24px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));overflow-y:auto;background:rgba(20,8,32,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+  .sos.open{display:flex;animation:fadein .4s ease}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  .sos-in{max-width:420px;width:100%;text-align:center;margin:auto}
+  .sos h2{font-family:Fraunces,serif;font-weight:600;font-size:26px}
+  .sos p{color:var(--muted);font-size:15px;line-height:1.5;margin-top:8px}
+  .sos p.strong{color:var(--ink);font-size:17px}
+  .breath{width:210px;height:210px;margin:14px auto 18px;position:relative;display:flex;align-items:center;justify-content:center}
+  .breath i{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(94,231,200,.6),rgba(139,108,255,.3) 60%,transparent 72%);transform:scale(.5);transition:transform 4s ease-in-out}
+  .breath.big i{transform:scale(1)}
+  .breath span{position:relative;font-family:Fraunces,serif;font-size:24px}
+  .lines{margin-top:20px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:4px 16px}
+  .line{padding:12px 0;border-bottom:1px solid var(--line)}.line:last-child{border-bottom:0}
+  .line b{display:block;font-size:15px}
+  .line a{color:var(--accent);font-weight:600;font-size:19px;text-decoration:none}
+  .line small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+  .sos-close{margin-top:20px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#2a0f3d;border:0;font:600 15px Inter,system-ui,sans-serif;padding:13px 28px;border-radius:99px;cursor:pointer}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(94,231,200,.7)}50%{box-shadow:0 0 0 9px rgba(94,231,200,0)}}
+  @keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+  @keyframes breathe{0%,100%{filter:drop-shadow(0 0 6px rgba(255,184,107,.45))}50%{filter:drop-shadow(0 0 18px rgba(255,184,107,.95))}}
+  @keyframes pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.18);opacity:1}100%{transform:scale(1);opacity:1}}
+  .wrap>*{opacity:0;animation:rise .9s cubic-bezier(.2,.8,.2,1) forwards}
+  .wrap>*:nth-child(1){animation-delay:.05s}.wrap>*:nth-child(2){animation-delay:.15s}.wrap>*:nth-child(3){animation-delay:.25s}
+  .wrap>*:nth-child(4){animation-delay:.4s}.wrap>*:nth-child(5){animation-delay:.45s}.wrap>*:nth-child(6){animation-delay:.55s}
+  .wrap>*:nth-child(7){animation-delay:.65s}.wrap>*:nth-child(8){animation-delay:.75s}.wrap>*:nth-child(9){animation-delay:.85s}.wrap>*:nth-child(10){animation-delay:.95s}
+  .pill .pd{animation:pulse 2.4s ease-in-out infinite}
+  .ring-fg{animation:breathe 4.5s ease-in-out infinite;transition:stroke-dashoffset 2.2s cubic-bezier(.2,.8,.2,1)}
+  .bar i{position:relative;overflow:hidden;transition:width 2s cubic-bezier(.2,.8,.2,1)}
+  .bar i:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);animation:shimmer 2.6s ease-in-out infinite}
+  .mile.done .dot{animation:pop .55s cubic-bezier(.2,.8,.2,1) both}
+  .card{transition:transform .25s ease}.card:hover{transform:translateY(-3px)}
+  @media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.wrap>*{opacity:1}}
+</style>
+</head>
+<body>
+<div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div><div class="glow g4"></div>
+<canvas class="stars" id="stars"></canvas>
+<div class="wrap">
+  <h1><span class="t-small">Molly's</span><span class="t-big">Sober days</span></h1>
+  <div class="pill"><span class="pd"></span><span>Next: <b id="topNext">—</b> <span id="topLeft"></span></span></div>
+
+  <div class="ring-wrap">
+    <svg viewBox="0 0 300 300">
+      <defs>
+        <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#5ee7c8"/><stop offset=".5" stop-color="#ffe27a"/><stop offset="1" stop-color="#ffb86b"/>
+        </linearGradient>
+      </defs>
+      <circle class="ring-bg" cx="150" cy="150" r="140"/>
+      <circle class="ring-fg" id="ring" cx="150" cy="150" r="140"/>
+    </svg>
+    <div class="centre">
+      <div class="days" id="days">0</div>
+      <div class="days-label" id="daysLabel">days</div>
+      <div class="live" id="live">0h 0m 0s</div>
+    </div>
+  </div>
+
+  <div class="since" id="breakdown"></div>
+  <div class="since" style="margin-top:6px">Since <b>27th August 2026</b></div>
+  <div class="msg"><span class="tag" id="tag">Today's thought</span><span id="msg"></span><span class="by" id="by"></span></div>
+
+  <div class="grid">
+    <div class="card"><div class="n" id="weeks">0</div><div class="l">weeks</div></div>
+    <div class="card"><div class="n" id="hours">0</div><div class="l">hours</div></div>
+    <div class="card"><div class="n" id="months">0</div><div class="l">months</div></div>
+  </div>
+
+  <div class="next">
+    <div class="t">Next milestone</div>
+    <div class="v" id="nextName">—</div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="s" id="nextSub"></div>
+  </div>
+
+  <div class="miles">
+    <div class="t">Milestones</div>
+    <div id="miles"></div>
+  </div>
+
+  <div class="foot">
+    <div class="note"><div class="nt">A note for you</div><div class="nb">You’ve got this. I’m proud of you. ❤️</div><div class="nf">Ollie</div></div>
+    One day at a time.<br><button class="sos-btn" id="sosOpen">Having a tough moment?</button>
+  </div>
+</div>
+
+<div class="sos" id="sos" role="dialog" aria-modal="true" aria-label="Tough moment">
+  <div class="sos-in">
+    <h2>Breathe with this</h2>
+    <p>Follow the circle for a minute. Nothing else to do.</p>
+    <div class="breath" id="breath"><i></i><span id="breathText">Breathe in</span></div>
+    <p class="strong" id="sosDays"></p>
+    <p>This feeling is real, and it will pass. You've got through every one before it.</p>
+    <div class="lines">
+      <div class="line"><b>Drinkline</b><a href="tel:03001231110">0300 123 1110</a><small>Free and confidential. Weekdays 9am to 8pm, weekends 11am to 4pm.</small></div>
+      <div class="line"><b>Samaritans</b><a href="tel:116123">116 123</a><small>Free, any time, day or night.</small></div>
+    </div>
+    <button class="sos-close" id="sosClose">I'm OK now</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var START = new Date(2026, 7, 27, 0, 0, 0); // 27th August 2026, local midnight
+  var DAY = 86400000;
+  var lastDays = -1;
+
+  var milestones = [
+    {d:1, name:'Day 1'},
+    {d:7, name:'1 week'},
+    {d:14, name:'2 weeks'},
+    {d:30, name:'30 days'},
+    {d:60, name:'60 days'},
+    {d:90, name:'90 days'},
+    {d:100, name:'100 days'},
+    {d:120, name:'4 months'},
+    {d:150, name:'150 days'},
+    {d:182, name:'6 months'},
+    {d:200, name:'200 days'},
+    {d:250, name:'250 days'},
+    {d:273, name:'9 months'},
+    {d:300, name:'300 days'},
+    {d:365, name:'1 year'},
+    {d:400, name:'400 days'},
+    {d:456, name:'15 months'},
+    {d:500, name:'500 days'},
+    {d:548, name:'18 months'},
+    {d:600, name:'600 days'},
+    {d:639, name:'21 months'},
+    {d:700, name:'700 days'},
+    {d:730, name:'2 years'},
+    {d:800, name:'800 days'},
+    {d:913, name:'30 months'},
+    {d:1000, name:'1,000 days'},
+    {d:1095, name:'3 years'}
+  ];
+
+  var messages = [
+    ["Fall seven times, stand up eight.", "Japanese proverb"],
+    "Sober isn't the absence of something. It's the presence of you.",
+    ["Rock bottom became the solid foundation on which I rebuilt my life.", "J.K. Rowling"],
+    "You didn't get lucky. You got strong.",
+    ["Don't count the days, make the days count.", "Muhammad Ali"],
+    "Hard days aren't a sign you're failing. They're a sign you're doing something hard.",
+    ["You must do the thing you think you cannot do.", "Eleanor Roosevelt"],
+    "You're not giving something up. You're taking your life back.",
+    ["The best way out is always through.", "Robert Frost"],
+    "Strength isn't loud. It's showing up, quietly, every single day.",
+    ["I can be changed by what happens to me. But I refuse to be reduced by it.", "Maya Angelou"],
+    "Every morning you wake up clear is a morning you won back.",
+    ["He who has a why to live can bear almost any how.", "Friedrich Nietzsche"],
+    "This is what courage looks like when nobody's clapping.",
+    ["I am not afraid of storms, for I am learning how to sail my ship.", "Louisa May Alcott"],
+    "You're breaking a pattern, not just a habit. That takes everything. You're doing it.",
+    ["Every action you take is a vote for the type of person you wish to become.", "James Clear"],
+    "You can't change yesterday. You already changed today.",
+    ["Courage is grace under pressure.", "Ernest Hemingway"],
+    "The wave always breaks. You just have to stay standing until it does.",
+    ["Life shrinks or expands in proportion to one's courage.", "Anaïs Nin"],
+    "Your strength was there all along. You just cleared the view.",
+    ["Strength does not come from physical capacity. It comes from an indomitable will.", "Mahatma Gandhi"],
+    "The woman who started this on day 1 would be in awe of you.",
+    ["Our greatest glory is not in never falling, but in rising every time we fall.", "Oliver Goldsmith"],
+    "Some days are a celebration. Some days are a fight. Win both.",
+    ["When we are no longer able to change a situation, we are challenged to change ourselves.", "Viktor Frankl"],
+    "You're not fragile. You're rebuilt.",
+    "Every day on this counter was earned. Nobody gave you a single one.",
+    "Feel it all. You can handle it. That's the whole secret.",
+    "Pride is allowed. You've earned every bit of it.",
+    "Real strength is choosing the right thing on the days you least want to.",
+    ["Start where you are. Use what you have. Do what you can.", "Arthur Ashe"],
+    "Tough day? Still standing. That's a win, not a footnote.",
+    ["Don't quit. Suffer now and live the rest of your life as a champion.", "Muhammad Ali"],
+    "Your mornings belong to you again. Guard them.",
+    ["We know what we are, but know not what we may be.", "William Shakespeare"],
+    ["You may encounter many defeats, but you must not be defeated.", "Maya Angelou"],
+    ["A champion is someone who gets up when they can't.", "Jack Dempsey"],
+    "One decision, made fresh every morning. That's the power.",
+    ["Nothing in life is to be feared, it is only to be understood.", "Marie Curie"],
+    ["This too shall pass.", "Persian proverb"],
+    ["Owning our story and loving ourselves through that process is the bravest thing we'll ever do.", "Brené Brown"],
+    "Strong people aren't the ones who never struggle. They're the ones who keep choosing.",
+    ["Turn your wounds into wisdom.", "Oprah Winfrey"],
+    "Freedom feels like this: nothing owns you.",
+    ["It's not whether you get knocked down, it's whether you get up.", "Vince Lombardi"],
+    "Not perfect. Not finished. Unbreakable.",
+    "You chose yourself. Keep choosing.",
+    "Nothing feels as good as waking up proud.",
+    "This is your strength, not your sacrifice.",
+    "You're allowed to rest and still be strong.",
+    "Scared and doing it anyway is still brave. Maybe the bravest kind.",
+    "Big changes are just small choices, stacked high.",
+    "Every setback you've faced made you harder to knock down.",
+    "Believe the evidence. Look how far you've come.",
+    "Calm is a strength. You're building it every day.",
+    "You keep your promises to yourself now. That changes everything.",
+    "When it gets loud in your head, remember the number on this screen.",
+    "Clear head, full heart, still standing. Again."
+  ];
+
+  // hand-picked quotes for milestone days, these override the daily one
+  var milestoneQuotes = {
+    90: "90 days. A full season of choosing yourself. Let that sink in.",
+    100: ["Rock bottom became the solid foundation on which I rebuilt my life.", "J.K. Rowling"],
+    120: "4 months. This isn't a phase any more. It's who you are.",
+    150: ["I am not afraid of storms, for I am learning how to sail my ship.", "Louisa May Alcott"],
+    182: "6 months. Half a year of mornings you'll remember for the rest of your life.",
+    200: ["You must do the thing you think you cannot do.", "Eleanor Roosevelt"],
+    250: "250 days. You are proof that people really can change.",
+    273: "9 months. You didn't get lucky. You got strong.",
+    300: ["Our greatest glory is not in never falling, but in rising every time we fall.", "Oliver Goldsmith"],
+    365: "1 year. 365 mornings. 365 choices. Every one of them yours. Happy sober birthday.",
+    400: ["I can be changed by what happens to me. But I refuse to be reduced by it.", "Maya Angelou"],
+    456: "15 months. The woman who started this on day 1 would be in awe of you.",
+    500: "500 days. Let that number land. Every single one was earned.",
+    548: ["Don't count the days, make the days count.", "Muhammad Ali"],
+    600: "600 days of being fully present for your own life.",
+    639: ["Courage is grace under pressure.", "Ernest Hemingway"],
+    700: "700 days. Not perfect. Not finished. Unbreakable.",
+    730: "2 years. You rebuilt something most people never even attempt.",
+    800: ["Life shrinks or expands in proportion to one's courage.", "Anaïs Nin"],
+    913: "2 and a half years. This is simply who you are now.",
+    1000: "1,000 days. Four digits. Every single one of them yours.",
+    1095: "3 years. Look at the life you built. Look at who built it."
+  };
+
+  function ordinal(n){var s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
+  function fmtDate(d){
+    var m=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return ordinal(d.getDate())+' '+m[d.getMonth()]+' '+d.getFullYear();
+  }
+  function el(id){return document.getElementById(id);}
+
+  function render(){
+    var now = new Date();
+    var ms = now - START;
+    if (ms < 0) ms = 0;
+    var days = Math.floor(ms / DAY);
+    var rem = ms - days*DAY;
+    var h = Math.floor(rem/3600000), m = Math.floor(rem%3600000/60000), s = Math.floor(rem%60000/1000);
+
+    if (!counting) el('days').textContent = days;
+    el('daysLabel').textContent = days === 1 ? 'day' : 'days';
+    el('live').textContent = h+'h '+m+'m '+s+'s';
+    el('weeks').textContent = (days/7).toFixed(1).replace(/\.0$/,'');
+    el('hours').textContent = Math.floor(ms/3600000).toLocaleString('en-GB');
+    // calendar months and leftover days
+    var mo = (now.getFullYear()-START.getFullYear())*12 + (now.getMonth()-START.getMonth());
+    if (now.getDate() < START.getDate()) mo--;
+    if (mo < 0) mo = 0;
+    var anchor = new Date(START.getFullYear(), START.getMonth()+mo, START.getDate());
+    var leftDays = Math.max(0, Math.floor((now - anchor)/DAY));
+    var lw = Math.floor(leftDays/7), ld = leftDays%7;
+    el('months').textContent = mo + (leftDays ? '.'+Math.round(leftDays/30.44*10) : '');
+    el('breakdown').innerHTML = '<b>'+mo+(mo===1?' month':' months')+'</b>, <b>'+lw+(lw===1?' week':' weeks')+'</b> and <b>'+ld+(ld===1?' day':' days')+'</b>';
+
+    // next milestone
+    var next = null, prev = 0;
+    for (var i=0;i<milestones.length;i++){
+      if (days < milestones[i].d){ next = milestones[i]; break; }
+      prev = milestones[i].d;
+    }
+    var ring = el('ring'), C = 2*Math.PI*140;
+    ring.setAttribute('stroke-dasharray', C);
+    if (next){
+      var frac = (ms/DAY - prev) / (next.d - prev);
+      frac = Math.max(0, Math.min(1, frac));
+      ring.setAttribute('stroke-dashoffset', C*(1-frac));
+      el('bar').style.width = (frac*100).toFixed(1)+'%';
+      var left = next.d - days;
+      var when = new Date(START.getTime() + next.d*DAY);
+      el('nextName').textContent = next.name;
+      el('nextSub').textContent = left + (left===1?' day':' days') + ' to go, on ' + fmtDate(when);
+      el('topNext').textContent = next.name;
+      el('topLeft').textContent = 'in ' + left + (left===1?' day':' days');
+    } else {
+      ring.setAttribute('stroke-dashoffset', 0);
+      el('bar').style.width = '100%';
+      el('nextName').textContent = 'Beyond every milestone';
+      el('nextSub').textContent = 'Keep going.';
+      el('topNext').textContent = 'every milestone passed';
+      el('topLeft').textContent = '';
+    }
+
+    // milestones list, rebuilt only when the day changes
+    if (days !== lastDays) {
+      var html = '';
+      for (var j=0;j<milestones.length;j++){
+        var mm = milestones[j], done = days >= mm.d;
+        var dt = new Date(START.getTime() + mm.d*DAY);
+        html += '<div class="mile'+(done?' done':'')+'"><div class="dot" style="animation-delay:'+(1+j*0.06).toFixed(2)+'s">'+(done?'&#10003;':'')+'</div>'+
+                '<div class="name">'+mm.name+'</div><div class="when">'+fmtDate(dt)+'</div></div>';
+      }
+      el('miles').innerHTML = html;
+      var mq = milestoneQuotes[days] || messages[days % messages.length], famous = typeof mq !== 'string';
+      el('msg').textContent = famous ? mq[0] : mq;
+      el('by').textContent = famous ? mq[1] : '';
+      el('by').style.display = famous ? 'block' : 'none';
+      lastDays = days;
+    }
+  }
+
+  function celebrate(){
+    try{
+      var c = document.createElement('canvas');
+      c.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:5';
+      document.body.appendChild(c);
+      var x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
+      var cols = ['#5ee7c8','#ffb86b','#ffe27a','#ffffff','#8b6cff'], ps = [];
+      for (var i=0;i<160;i++) ps.push({x:c.width/2,y:c.height*0.3,vx:(Math.random()-.5)*15,vy:-Math.random()*14-4,r:Math.random()*7+4,a:Math.random()*6.28,va:(Math.random()-.5)*.3,col:cols[i%cols.length]});
+      var t0 = performance.now();
+      (function f(t){
+        var s = (t-t0)/1000;
+        x.clearRect(0,0,c.width,c.height);
+        for (var i=0;i<ps.length;i++){
+          var p = ps[i]; p.vy += .32; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.a += p.va;
+          x.save(); x.globalAlpha = Math.max(0, 1 - s/4.5); x.translate(p.x,p.y); x.rotate(p.a);
+          x.fillStyle = p.col; x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2); x.restore();
+        }
+        if (s < 4.6) requestAnimationFrame(f); else c.remove();
+      })(t0);
+    }catch(e){}
+  }
+
+  // tough moment overlay with box breathing
+  var breathTimer = null, ph = 0;
+  var phases = [["Breathe in", true], ["Hold", true], ["Breathe out", false], ["Hold", false]];
+  function breathStep(){
+    var p = phases[ph % 4];
+    el('breathText').textContent = p[0];
+    el('breath').className = 'breath' + (p[1] ? ' big' : '');
+    ph++;
+  }
+  el('sosOpen').onclick = function(){
+    var d = Math.max(0, Math.floor((new Date() - START) / DAY));
+    el('sosDays').textContent = "You have " + d + (d === 1 ? " day" : " days") + " behind you. A hard moment doesn't take that away.";
+    el('sos').classList.add('open');
+    ph = 0; el('breath').className = 'breath';
+    clearInterval(breathTimer);
+    setTimeout(breathStep, 60);
+    breathTimer = setInterval(breathStep, 4000);
+  };
+  el('sosClose').onclick = function(){
+    el('sos').classList.remove('open');
+    clearInterval(breathTimer);
+  };
+
+  var counting = true;
+  var ringEl = document.getElementById('ring'), RC = 2*Math.PI*140;
+  ringEl.setAttribute('stroke-dasharray', RC);
+  ringEl.setAttribute('stroke-dashoffset', RC);
+  ringEl.getBoundingClientRect();
+  el('days').textContent = 0;
+
+  var reduce = false;
+  try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){}
+  var target = Math.max(0, Math.floor((new Date() - START) / DAY));
+  var hit = null;
+  for (var q=0;q<milestones.length;q++) if (milestones[q].d === target) hit = milestones[q];
+
+  setTimeout(function(){
+    render();
+    if (reduce) { counting = false; render(); if (hit) el('tag').textContent = 'Milestone today: ' + hit.name; return; }
+    var t0 = null, dur = 1800;
+    function step(t){
+      if (!t0) t0 = t;
+      var p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      el('days').textContent = Math.round(target * e);
+      if (p < 1) requestAnimationFrame(step);
+      else {
+        counting = false; render();
+        if (hit) { el('tag').textContent = 'Milestone today: ' + hit.name; celebrate(); }
+      }
+    }
+    requestAnimationFrame(step);
+  }, 350);
+  setInterval(render, 1000);
+
+  // refresh when reopened from the home screen so the day and quote are current
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) render(); });
+
+  // gentle star field
+  try{
+    var c = el('stars'), ctx = c.getContext('2d'), pts = [];
+    function size(){ c.width = innerWidth; c.height = innerHeight; }
+    size(); addEventListener('resize', size);
+    for (var k=0;k<90;k++) pts.push({x:Math.random(),y:Math.random(),r:Math.random()*1.4+.3,p:Math.random()*6.28,v:Math.random()*.02+.005});
+    (function tick(){
+      ctx.clearRect(0,0,c.width,c.height);
+      for (var i=0;i<pts.length;i++){
+        var p=pts[i]; p.p+=p.v;
+        ctx.globalAlpha = .35 + .35*Math.sin(p.p);
+        ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(p.x*c.width,p.y*c.height,p.r,0,6.28); ctx.fill();
+      }
+      requestAnimationFrame(tick);
+    })();
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
