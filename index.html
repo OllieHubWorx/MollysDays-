@@ -119,6 +119,22 @@
   .line a{color:var(--accent);font-weight:600;font-size:19px;text-decoration:none}
   .line small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
   .sos-close{margin-top:20px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#2a0f3d;border:0;font:600 15px Inter,system-ui,sans-serif;padding:13px 28px;border-radius:99px;cursor:pointer}
+  .cele{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;padding:24px;overflow:hidden;background:rgba(20,6,34,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .cele.open{display:flex;animation:fadein .4s ease}
+  .cele-card{position:relative;z-index:2;max-width:400px;width:100%;text-align:center;padding:30px 24px 26px;border-radius:24px;background:rgba(26,8,42,.84);border:1px solid rgba(255,226,122,.55);box-shadow:0 20px 60px rgba(0,0,0,.45),0 0 70px rgba(255,184,107,.3);animation:popin .8s cubic-bezier(.2,1.4,.4,1) both}
+  @keyframes popin{from{transform:scale(.55);opacity:0}to{transform:scale(1);opacity:1}}
+  .cele-k{font-size:13px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent2)}
+  .cele-h{font-family:Fraunces,serif;font-weight:900;font-size:40px;line-height:1.1;margin-top:8px;padding:0 .1em;background:linear-gradient(90deg,#5ee7c8,#ffe27a,#ffb86b);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .cele-m{font-family:Fraunces,serif;font-weight:900;font-size:62px;line-height:1.05;margin-top:8px;color:#fff;text-shadow:0 4px 30px rgba(255,184,107,.85)}
+  .cele-d{font-size:15px;font-weight:700;color:var(--accent);margin-top:8px}
+  .cele-q{font-family:Fraunces,serif;font-style:italic;font-size:19px;line-height:1.4;color:var(--ink);margin-top:18px}
+  .cele-by{display:block;font-family:Inter,system-ui,sans-serif;font-style:normal;font-weight:700;font-size:13px;color:var(--accent);margin-top:8px}
+  .cele-btn{margin-top:22px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#2a0f3d;border:0;font:700 16px Inter,system-ui,sans-serif;padding:14px 34px;border-radius:99px;cursor:pointer;box-shadow:0 8px 24px rgba(255,184,107,.35)}
+  .balloon{position:absolute;bottom:-170px;width:58px;height:72px;border-radius:50% 50% 48% 52%/55% 55% 45% 45%;z-index:1;animation:floatup linear forwards;box-shadow:inset -8px -10px 0 rgba(0,0,0,.13)}
+  .balloon:before{content:'';position:absolute;left:50%;bottom:-7px;width:10px;height:8px;margin-left:-5px;background:inherit;clip-path:polygon(50% 0,100% 100%,0 100%)}
+  .balloon:after{content:'';position:absolute;left:50%;top:100%;width:1.5px;height:80px;margin-top:6px;background:rgba(255,255,255,.5)}
+  .balloon i{position:absolute;left:22%;top:16%;width:20%;height:24%;border-radius:50%;background:rgba(255,255,255,.45);transform:rotate(25deg)}
+  @keyframes floatup{0%{transform:translate(0,0) rotate(-4deg)}25%{transform:translate(14px,-32vh) rotate(4deg)}50%{transform:translate(-12px,-64vh) rotate(-4deg)}75%{transform:translate(12px,-96vh) rotate(4deg)}100%{transform:translate(0,-135vh) rotate(-2deg)}}
   @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(94,231,200,.7)}50%{box-shadow:0 0 0 9px rgba(94,231,200,0)}}
   @keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
@@ -201,6 +217,17 @@
       <div class="line"><b>Samaritans</b><a href="tel:116123">116 123</a><small>Free, any time, day or night.</small></div>
     </div>
     <button class="sos-close" id="sosClose">I'm OK now</button>
+  </div>
+</div>
+
+<div class="cele" id="cele" role="dialog" aria-modal="true" aria-label="Milestone reached">
+  <div class="cele-card">
+    <div class="cele-k">Milestone reached</div>
+    <div class="cele-h">Congratulations</div>
+    <div class="cele-m" id="celeM"></div>
+    <div class="cele-d" id="celeD"></div>
+    <div class="cele-q" id="celeQ"></div>
+    <button class="cele-btn" id="celeBtn">Keep going</button>
   </div>
 </div>
 
@@ -405,14 +432,14 @@
     }
   }
 
-  function celebrate(){
+  function celebrate(ox){
     try{
       var c = document.createElement('canvas');
-      c.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:5';
+      c.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:40';
       document.body.appendChild(c);
       var x = c.getContext('2d'); c.width = innerWidth; c.height = innerHeight;
       var cols = ['#5ee7c8','#ffb86b','#ffe27a','#ffffff','#8b6cff'], ps = [];
-      for (var i=0;i<160;i++) ps.push({x:c.width/2,y:c.height*0.3,vx:(Math.random()-.5)*15,vy:-Math.random()*14-4,r:Math.random()*7+4,a:Math.random()*6.28,va:(Math.random()-.5)*.3,col:cols[i%cols.length]});
+      for (var i=0;i<160;i++) ps.push({x:c.width*(ox||.5),y:c.height*0.3,vx:(Math.random()-.5)*15,vy:-Math.random()*14-4,r:Math.random()*7+4,a:Math.random()*6.28,va:(Math.random()-.5)*.3,col:cols[i%cols.length]});
       var t0 = performance.now();
       (function f(t){
         var s = (t-t0)/1000;
@@ -426,6 +453,48 @@
       })(t0);
     }catch(e){}
   }
+
+  // milestone celebration popup, shown the first time the app is opened after a new milestone
+  var KEY = 'mollysdays-last-milestone';
+  function storeLast(v){ try { localStorage.setItem(KEY, String(v)); } catch(e){} }
+  function readLast(){
+    try { var v = localStorage.getItem(KEY); return v === null ? null : parseInt(v, 10); }
+    catch(e){ return undefined; }
+  }
+  function balloons(){
+    var cols = ['#ff8a3c','#ffe27a','#5ee7c8','#8b6cff','#ff5f9e','#ffb86b'];
+    for (var i=0;i<14;i++){
+      var b = document.createElement('div'), sc = .75 + Math.random()*.5;
+      b.className = 'balloon';
+      b.style.left = (3 + Math.random()*86) + '%';
+      b.style.background = cols[i % cols.length];
+      b.style.width = (58*sc) + 'px'; b.style.height = (72*sc) + 'px';
+      b.style.animationDuration = (6 + Math.random()*4) + 's';
+      b.style.animationDelay = (Math.random()*1.8) + 's';
+      b.innerHTML = '<i></i>';
+      el('cele').appendChild(b);
+    }
+  }
+  function showMilestone(m){
+    var when = new Date(START.getTime() + m.d*DAY);
+    var isToday = Math.floor((new Date() - START) / DAY) === m.d;
+    el('celeM').textContent = m.name;
+    el('celeD').textContent = isToday ? 'Reached today' : 'Reached on ' + fmtDate(when);
+    var q = milestoneQuotes[m.d] || "Every single one of these days was earned.";
+    var famous = typeof q !== 'string';
+    el('celeQ').textContent = famous ? q[0] : q;
+    if (famous) { var by = document.createElement('span'); by.className = 'cele-by'; by.textContent = q[1]; el('celeQ').appendChild(by); }
+    el('cele').classList.add('open');
+    balloons();
+    celebrate(.5);
+    setTimeout(function(){ celebrate(.2); }, 700);
+    setTimeout(function(){ celebrate(.8); }, 1400);
+  }
+  el('celeBtn').onclick = function(){
+    el('cele').classList.remove('open');
+    var bs = document.querySelectorAll('.balloon');
+    for (var i=0;i<bs.length;i++) bs[i].remove();
+  };
 
   // tough moment overlay with box breathing
   var breathTimer = null, ph = 0;
@@ -463,9 +532,21 @@
   var hit = null;
   for (var q=0;q<milestones.length;q++) if (milestones[q].d === target) hit = milestones[q];
 
+  function afterCount(){
+    if (hit) el('tag').textContent = 'Milestone today: ' + hit.name;
+    var reached = null;
+    for (var r=0;r<milestones.length;r++) if (milestones[r].d <= target) reached = milestones[r];
+    var last = readLast();
+    if (last === undefined) { if (hit && !reduce) celebrate(.5); return; }
+    var isNew = reached && (last === null ? !!hit : reached.d > last);
+    if (isNew) showMilestone(reached);
+    else if (hit && !reduce) celebrate(.5);
+    if (reached) storeLast(reached.d);
+  }
+
   setTimeout(function(){
     render();
-    if (reduce) { counting = false; render(); if (hit) el('tag').textContent = 'Milestone today: ' + hit.name; return; }
+    if (reduce) { counting = false; render(); afterCount(); return; }
     var t0 = null, dur = 1800;
     function step(t){
       if (!t0) t0 = t;
@@ -474,7 +555,7 @@
       if (p < 1) requestAnimationFrame(step);
       else {
         counting = false; render();
-        if (hit) { el('tag').textContent = 'Milestone today: ' + hit.name; celebrate(); }
+        afterCount();
       }
     }
     requestAnimationFrame(step);
