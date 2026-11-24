@@ -96,6 +96,11 @@
   .mile .when{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
   .foot{margin-top:30px;font-size:15px;font-weight:600;color:var(--ink)}
   @media (max-width:380px){.ring-wrap{width:260px;height:260px}.days{font-size:88px}}
+  .cd{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+  .cd div{background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:12px;padding:9px 4px 7px;text-align:center}
+  .cd b{display:block;font-family:Fraunces,serif;font-weight:900;font-size:26px;line-height:1.1;color:var(--ink);font-variant-numeric:tabular-nums}
+  .cd div:last-child b{color:var(--pink)}
+  .cd span{display:block;font-size:10px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:var(--accent2);margin-top:3px}
   .credit{margin-top:26px;font-size:12px;font-weight:600;letter-spacing:.6px;color:var(--muted)}
   .credit b{font-family:Fraunces,serif;font-weight:900;font-size:16px;letter-spacing:.5px;background:linear-gradient(90deg,#5ee7c8,#ffe27a,#ffb86b);-webkit-background-clip:text;background-clip:text;color:transparent}
   .note{margin:0 0 22px;padding:20px 22px;border-radius:18px;text-align:center;background:linear-gradient(135deg,rgba(255,138,60,.2),rgba(255,226,122,.12)),rgba(26,8,42,.55);border:1px solid rgba(255,184,107,.45);box-shadow:0 8px 30px rgba(0,0,0,.18)}
@@ -193,6 +198,7 @@
   <div class="next">
     <div class="t">Next milestone</div>
     <div class="v" id="nextName">—</div>
+    <div class="cd" id="cd"><div><b id="cdD">0</b><span>days</span></div><div><b id="cdH">00</b><span>hrs</span></div><div><b id="cdM">00</b><span>mins</span></div><div><b id="cdS">00</b><span>secs</span></div></div>
     <div class="bar"><i id="bar"></i></div>
     <div class="s" id="nextSub"></div>
   </div>
@@ -406,14 +412,21 @@
       var left = next.d - days;
       var when = new Date(START.getTime() + next.d*DAY);
       el('nextName').textContent = next.name;
-      el('nextSub').textContent = left + (left===1?' day':' days') + ' to go, on ' + fmtDate(when);
+      el('nextSub').textContent = 'Arrives on ' + fmtDate(when);
+      var togo = Math.max(0, when - now), p2 = function(n){ return (n < 10 ? '0' : '') + n; };
+      el('cd').style.display = '';
+      el('cdD').textContent = Math.floor(togo / DAY);
+      el('cdH').textContent = p2(Math.floor(togo % DAY / 3600000));
+      el('cdM').textContent = p2(Math.floor(togo % 3600000 / 60000));
+      el('cdS').textContent = p2(Math.floor(togo % 60000 / 1000));
       el('topNext').textContent = next.name;
-      el('topLeft').textContent = 'in ' + left + (left===1?' day':' days');
+      el('topLeft').textContent = left === 1 ? 'tomorrow' : 'in ' + left + ' days';
     } else {
       ring.setAttribute('stroke-dashoffset', 0);
       el('bar').style.width = '100%';
       el('nextName').textContent = 'Beyond every milestone';
       el('nextSub').textContent = 'Keep going.';
+      el('cd').style.display = 'none';
       el('topNext').textContent = 'every milestone passed';
       el('topLeft').textContent = '';
     }
