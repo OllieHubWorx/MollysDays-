@@ -564,7 +564,18 @@
   setInterval(render, 1000);
 
   // refresh when reopened from the home screen so the day and quote are current
-  document.addEventListener('visibilitychange', function(){ if (!document.hidden) render(); });
+  // when reopened after a while, reload so she always gets the latest version and any milestone popup
+  var hiddenAt = 0;
+  function freshen(){
+    var away = hiddenAt ? Date.now() - hiddenAt : 0;
+    var dayNow = Math.floor((new Date() - START) / DAY);
+    if (away > 30*60000 || (lastDays !== -1 && dayNow !== lastDays)) location.reload();
+    else render();
+  }
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden) hiddenAt = Date.now(); else freshen();
+  });
+  addEventListener('pageshow', function(e){ if (e.persisted) freshen(); });
 
   // gentle star field
   try{
