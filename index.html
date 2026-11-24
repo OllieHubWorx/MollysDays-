@@ -28,14 +28,13 @@
   .g3{width:760px;height:760px;left:-10%;bottom:-300px;background:radial-gradient(circle,rgba(255,154,60,.55) 0%,rgba(255,154,60,0) 66%);animation-delay:-12s}
   .g4{width:600px;height:600px;right:-30%;top:30%;background:radial-gradient(circle,rgba(94,231,200,.32) 0%,rgba(94,231,200,0) 66%);animation-delay:-3s}
   *{box-sizing:border-box;margin:0;padding:0}
-  html{min-height:100%;background-color:#2a0f3d;background-image:radial-gradient(circle 420px at 0% 2%,rgba(255,95,158,.55),rgba(255,95,158,0) 100%),radial-gradient(circle 400px at 100% 18%,rgba(139,108,255,.5),rgba(139,108,255,0) 100%),radial-gradient(circle 340px at 100% 40%,rgba(94,231,200,.22),rgba(94,231,200,0) 100%),radial-gradient(circle 420px at 0% 56%,rgba(255,95,158,.36),rgba(255,95,158,0) 100%),radial-gradient(circle 380px at 100% 74%,rgba(139,108,255,.36),rgba(139,108,255,0) 100%),radial-gradient(circle 480px at 30% 100%,rgba(255,154,60,.48),rgba(255,154,60,0) 100%),linear-gradient(170deg,#1b0b2e 0%,#2a0f3d 22%,#4a1a55 52%,#5b1d5e 78%,#6e2258 100%)}
-  body{
-    font-family:Inter,system-ui,sans-serif;color:var(--ink);
-    background:transparent;position:relative;
-    min-height:100vh;display:flex;flex-direction:column;align-items:center;
-    padding:calc(28px + env(safe-area-inset-top)) calc(18px + env(safe-area-inset-right)) calc(48px + env(safe-area-inset-bottom)) calc(18px + env(safe-area-inset-left));
-    overflow-x:hidden;
-  }
+  html,body{background:#2a0f3d}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink);overflow-x:hidden}
+  .page{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:calc(28px + env(safe-area-inset-top)) calc(18px + env(safe-area-inset-right)) calc(48px + env(safe-area-inset-bottom)) calc(18px + env(safe-area-inset-left));
+    background-color:#2a0f3d;
+    background-image:radial-gradient(circle at 18% 22%,rgba(255,255,255,.75) 0 1px,rgba(255,255,255,0) 1.7px),radial-gradient(circle at 63% 48%,rgba(255,255,255,.55) 0 1px,rgba(255,255,255,0) 1.7px),radial-gradient(circle at 84% 12%,rgba(255,255,255,.6) 0 .8px,rgba(255,255,255,0) 1.5px),radial-gradient(circle at 37% 80%,rgba(255,255,255,.5) 0 1.2px,rgba(255,255,255,0) 1.9px),radial-gradient(circle at 92% 86%,rgba(255,255,255,.45) 0 .8px,rgba(255,255,255,0) 1.5px),radial-gradient(circle 420px at 0% 2%,rgba(255,95,158,.55),rgba(255,95,158,0)),radial-gradient(circle 400px at 100% 18%,rgba(139,108,255,.5),rgba(139,108,255,0)),radial-gradient(circle 340px at 100% 40%,rgba(94,231,200,.22),rgba(94,231,200,0)),radial-gradient(circle 420px at 0% 56%,rgba(255,95,158,.36),rgba(255,95,158,0)),radial-gradient(circle 380px at 100% 74%,rgba(139,108,255,.36),rgba(139,108,255,0)),radial-gradient(circle 480px at 30% 100%,rgba(255,154,60,.48),rgba(255,154,60,0)),linear-gradient(170deg,#1b0b2e 0%,#2a0f3d 22%,#4a1a55 52%,#5b1d5e 78%,#6e2258 100%);
+    background-size:260px 300px,260px 300px,260px 300px,260px 300px,260px 300px,100% 100%,100% 100%,100% 100%,100% 100%,100% 100%,100% 100%,100% 100%;
+    background-repeat:repeat,repeat,repeat,repeat,repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat,no-repeat}
   .stars{position:fixed;inset:0;pointer-events:none;z-index:0}
   .wrap{position:relative;z-index:1;width:100%;max-width:520px;text-align:center}
   h1{margin-top:4px;line-height:1}
@@ -184,7 +183,7 @@
 </style>
 </head>
 <body>
-<canvas class="stars" id="stars"></canvas>
+<div class="page">
 <div class="wrap">
   <h1><span class="t-small">Molly's</span><span class="t-big">Sober days</span></h1>
   <div class="pill"><span class="pd"></span><span>Next: <b id="topNext">—</b> <span id="topLeft"></span></span></div>
@@ -234,6 +233,7 @@
     One day at a time.<br><button class="sos-btn" id="sosOpen">Having a tough moment?</button>
     <div class="credit">App created by <b>OlMolWorx</b></div>
   </div>
+</div>
 </div>
 
 <div class="sos" id="sos" role="dialog" aria-modal="true" aria-label="Tough moment">
@@ -690,22 +690,6 @@
   });
   addEventListener('pageshow', function(e){ if (e.persisted) freshen(); });
 
-  // gentle star field
-  try{
-    var c = el('stars'), ctx = c.getContext('2d'), pts = [];
-    function size(){ c.width = innerWidth; c.height = innerHeight; }
-    size(); addEventListener('resize', size);
-    for (var k=0;k<90;k++) pts.push({x:Math.random(),y:Math.random(),r:Math.random()*1.4+.3,p:Math.random()*6.28,v:Math.random()*.02+.005});
-    (function tick(){
-      ctx.clearRect(0,0,c.width,c.height);
-      for (var i=0;i<pts.length;i++){
-        var p=pts[i]; p.p+=p.v;
-        ctx.globalAlpha = .35 + .35*Math.sin(p.p);
-        ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(p.x*c.width,p.y*c.height,p.r,0,6.28); ctx.fill();
-      }
-      requestAnimationFrame(tick);
-    })();
-  }catch(e){}
 })();
 </script>
 </body>
