@@ -28,7 +28,7 @@
   .g3{width:760px;height:760px;left:-10%;bottom:-300px;background:radial-gradient(circle,rgba(255,154,60,.55) 0%,rgba(255,154,60,0) 66%);animation-delay:-12s}
   .g4{width:600px;height:600px;right:-30%;top:30%;background:radial-gradient(circle,rgba(94,231,200,.32) 0%,rgba(94,231,200,0) 66%);animation-delay:-3s}
   *{box-sizing:border-box;margin:0;padding:0}
-  html{min-height:100%;background:linear-gradient(170deg,#1b0b2e 0%,#2a0f3d 22%,#4a1a55 52%,#5b1d5e 78%,#6e2258 100%)}
+  html{min-height:100%;background-color:#2a0f3d;background-image:radial-gradient(circle 420px at 0% 2%,rgba(255,95,158,.55),rgba(255,95,158,0) 100%),radial-gradient(circle 400px at 100% 18%,rgba(139,108,255,.5),rgba(139,108,255,0) 100%),radial-gradient(circle 340px at 100% 40%,rgba(94,231,200,.22),rgba(94,231,200,0) 100%),radial-gradient(circle 420px at 0% 56%,rgba(255,95,158,.36),rgba(255,95,158,0) 100%),radial-gradient(circle 380px at 100% 74%,rgba(139,108,255,.36),rgba(139,108,255,0) 100%),radial-gradient(circle 480px at 30% 100%,rgba(255,154,60,.48),rgba(255,154,60,0) 100%),linear-gradient(170deg,#1b0b2e 0%,#2a0f3d 22%,#4a1a55 52%,#5b1d5e 78%,#6e2258 100%)}
   body{
     font-family:Inter,system-ui,sans-serif;color:var(--ink);
     background:transparent;position:relative;
@@ -60,24 +60,24 @@
   .since{font-size:15px;font-weight:500;color:var(--ink);margin-top:14px;text-shadow:0 1px 10px rgba(20,6,34,.7)}
   .since b{color:var(--accent);font-weight:700}
   .msg{position:relative;font-family:Fraunces,serif;font-style:italic;font-size:21px;margin:22px auto 0;padding:20px 24px 22px;line-height:1.4;color:var(--ink);
-       background:rgba(26,8,42,.55);border:1px solid var(--line);border-radius:18px;backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,.18)}
+       background:rgba(26,8,42,.55);border:1px solid var(--line);border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.18)}
   #msg:before,#msg:after{font-family:Fraunces,serif;font-style:normal;font-weight:900;font-size:1.9em;line-height:0;vertical-align:-.38em;color:var(--accent)}
   #msg:before{content:'\201C';margin-right:5px}
   #msg:after{content:'\201D';margin-left:4px}
   .msg .by{display:block;font-family:Inter,system-ui,sans-serif;font-style:normal;font-weight:600;font-size:13px;letter-spacing:.4px;color:var(--accent);margin-top:12px}
   .msg .tag{display:block;font-family:Inter,system-ui,sans-serif;font-style:normal;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--accent2);margin-bottom:8px}
   .pill{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 16px;border-radius:99px;font-size:15px;font-weight:600;
-        background:linear-gradient(135deg,rgba(94,231,200,.2),rgba(255,184,107,.2)),rgba(26,8,42,.55);border:1px solid var(--line);backdrop-filter:blur(10px)}
+        background:linear-gradient(135deg,rgba(94,231,200,.2),rgba(255,184,107,.2)),rgba(26,8,42,.55);border:1px solid var(--line)}
   .pill b{font-weight:800;color:var(--pink)}
   .pill .pd{width:8px;height:8px;border-radius:50%;background:var(--accent2);box-shadow:0 0 10px var(--accent2)}
   .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:26px}
-  .card{background:rgba(26,8,42,.55);border:1px solid var(--line);border-radius:18px;padding:14px 8px;backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,.18)}
+  .card{background:rgba(26,8,42,.55);border:1px solid var(--line);border-radius:18px;padding:14px 8px;box-shadow:0 8px 30px rgba(0,0,0,.18)}
   .card:nth-child(1) .n{color:var(--accent2)}
   .card:nth-child(2) .n{color:var(--accent)}
   .card:nth-child(3) .n{color:var(--pink)}
   .card .n{font-family:Fraunces,serif;font-weight:900;font-size:32px;line-height:1}
   .card .l{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--ink);margin-top:8px}
-  .next{margin-top:22px;background:rgba(26,8,42,.55);border:1px solid var(--line);border-radius:18px;padding:16px;text-align:left;backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,.18)}
+  .next{margin-top:22px;background:rgba(26,8,42,.55);border:1px solid var(--line);border-radius:18px;padding:16px;text-align:left;box-shadow:0 8px 30px rgba(0,0,0,.18)}
   .next .t{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent2)}
   .next .v{font-family:Fraunces,serif;font-weight:900;font-size:30px;margin-top:4px;color:var(--pink);text-shadow:0 2px 16px rgba(255,184,107,.45)}
   .bar{height:8px;background:var(--line);border-radius:99px;margin-top:12px;overflow:hidden}
@@ -184,7 +184,6 @@
 </style>
 </head>
 <body>
-<div class="bg"><div class="glow g1"></div><div class="glow g2"></div><div class="glow g4"></div><div class="glow g5"></div><div class="glow g3"></div></div>
 <canvas class="stars" id="stars"></canvas>
 <div class="wrap">
   <h1><span class="t-small">Molly's</span><span class="t-big">Sober days</span></h1>
