@@ -497,7 +497,7 @@
     var isToday = Math.floor((new Date() - START) / DAY) === m.d;
     el('celeM').textContent = m.name;
     el('celeD').textContent = isToday ? 'Reached today' : 'Reached on ' + fmtDate(when);
-    var q = ["I’m so fucking proud of you, Molly. You’re the strongest person I know.", "Ollie"];
+    var q = ["I’ve seen how hard you’ve worked for every one of these days. I’m so fucking proud of you Molly. You’re the strongest person I know. ❤️", "Ollie"];
     var famous = typeof q !== 'string';
     el('celeQ').textContent = famous ? q[0] : q;
     if (famous) { var by = document.createElement('span'); by.className = 'cele-by'; by.textContent = q[1]; el('celeQ').appendChild(by); }
