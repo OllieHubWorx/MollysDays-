@@ -126,6 +126,29 @@
   .line a{color:var(--accent);font-weight:600;font-size:19px;text-decoration:none}
   .line small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
   .sos-close{margin-top:20px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:#2a0f3d;border:0;font:600 15px Inter,system-ui,sans-serif;padding:13px 28px;border-radius:99px;cursor:pointer}
+  .sos-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+  .steps{display:flex;gap:6px}
+  .steps i{width:24px;height:5px;border-radius:9px;background:rgba(255,255,255,.2);transition:background .3s}
+  .steps i.on{background:linear-gradient(90deg,var(--accent2),var(--accent))}
+  .sos-x{background:none;border:0;color:var(--ink);font:600 15px Inter,system-ui,sans-serif;cursor:pointer;padding:6px 2px}
+  .step{display:none}
+  .step.on{display:block;animation:fadein .4s ease}
+  .sos h2{font-size:30px;font-weight:900}
+  .breath>span{position:relative;display:flex;flex-direction:column;align-items:center}
+  .breath .cnt{display:block;font-family:Fraunces,serif;font-weight:900;font-size:46px;line-height:1;margin-top:6px;color:var(--pink)}
+  .rounds{font-size:13px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--accent2)}
+  .ground{text-align:left;margin-top:18px;display:grid;gap:8px}
+  .g{display:flex;gap:14px;align-items:center;padding:12px 14px;border-radius:14px;background:rgba(26,8,42,.55);border:1px solid var(--line);cursor:pointer;font-size:16px;font-weight:600;color:var(--ink);transition:all .25s;-webkit-tap-highlight-color:transparent}
+  .g b{font-family:Fraunces,serif;font-weight:900;font-size:26px;color:var(--pink);width:26px;text-align:center}
+  .g.done{border-color:rgba(94,231,200,.7);background:rgba(94,231,200,.16)}
+  .g.done b{color:var(--accent2)}
+  .write{display:block;width:100%;min-height:180px;margin-top:16px;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,.3);background:rgba(26,8,42,.65);color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif;resize:vertical}
+  .write::placeholder{color:rgba(255,248,240,.5)}
+  .write:focus{outline:none;border-color:var(--accent2)}
+  .sos p.small{font-size:13px;margin-top:10px}
+  .linkbtn{display:inline-block;background:none;border:0;color:var(--accent);font:700 14px Inter,system-ui,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer;margin-top:16px;padding:4px}
+  .big{font-family:Fraunces,serif;font-weight:900;font-size:56px;line-height:1.05;margin-top:10px;color:var(--pink);text-shadow:0 4px 26px rgba(255,184,107,.55)}
+  .sos-close{margin-top:22px}
   .cele{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;padding:24px;overflow:hidden;background:rgba(20,6,34,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
   .cele.open{display:flex;animation:fadein .4s ease}
   .cele-card{position:relative;z-index:2;max-width:400px;width:100%;text-align:center;padding:30px 24px 26px;border-radius:24px;background:rgba(26,8,42,.84);border:1px solid rgba(255,226,122,.55);box-shadow:0 20px 60px rgba(0,0,0,.45),0 0 70px rgba(255,184,107,.3);animation:popin .8s cubic-bezier(.2,1.4,.4,1) both}
@@ -217,16 +240,59 @@
 
 <div class="sos" id="sos" role="dialog" aria-modal="true" aria-label="Tough moment">
   <div class="sos-in">
-    <h2>Breathe with this</h2>
-    <p>Follow the circle for a minute. Nothing else to do.</p>
-    <div class="breath" id="breath"><i></i><span id="breathText">Breathe in</span></div>
-    <p class="strong" id="sosDays"></p>
-    <p>This feeling is real, and it will pass. You've got through every one before it.</p>
-    <div class="lines">
-      <div class="line"><b>Drinkline</b><a href="tel:03001231110">0300 123 1110</a><small>Free and confidential. Weekdays 9am to 8pm, weekends 11am to 4pm.</small></div>
-      <div class="line"><b>Samaritans</b><a href="tel:116123">116 123</a><small>Free, any time, day or night.</small></div>
+    <div class="sos-top"><div class="steps" id="steps"><i></i><i></i><i></i><i></i><i></i></div><button class="sos-x" id="sosX">Close</button></div>
+
+    <div class="step" data-s="0">
+      <h2>Take a moment</h2>
+      <p class="strong">You opened this. That's already the right move.</p>
+      <p>We'll do this together, one small step at a time. Breathe, ground yourself, get it out of your head, then remember who you are.</p>
+      <button class="sos-close" data-go="1">Let's start</button><br>
+      <button class="linkbtn" data-go="4">I need to talk to someone now</button>
     </div>
-    <button class="sos-close" id="sosClose">I'm OK now</button>
+
+    <div class="step" data-s="1">
+      <h2>Breathe</h2>
+      <p>Follow the circle. In for 4, hold for 4, out for 4, hold for 4.</p>
+      <div class="breath" id="breath"><i></i><span><span id="breathText">Breathe in</span><span class="cnt" id="breathCnt">4</span></span></div>
+      <div class="rounds" id="rounds">Round 1 of 4</div>
+      <button class="sos-close" data-go="2" id="breathNext">Skip</button><br>
+      <button class="linkbtn" data-go="4">I need to talk to someone now</button>
+    </div>
+
+    <div class="step" data-s="2">
+      <h2>Ground yourself</h2>
+      <p>Look around you. Tap each one as you find it.</p>
+      <div class="ground">
+        <div class="g"><b>5</b>things you can see</div>
+        <div class="g"><b>4</b>things you can touch</div>
+        <div class="g"><b>3</b>things you can hear</div>
+        <div class="g"><b>2</b>things you can smell</div>
+        <div class="g"><b>1</b>slow breath, all the way out</div>
+      </div>
+      <button class="sos-close" data-go="3">Next</button><br>
+      <button class="linkbtn" data-go="4">I need to talk to someone now</button>
+    </div>
+
+    <div class="step" data-s="3">
+      <h2>Write it out</h2>
+      <p>What's going on right now? Get it out of your head and onto the screen. Nobody will read it.</p>
+      <textarea class="write" id="write" placeholder="Right now I feel..."></textarea>
+      <p class="small">Nothing you write here is saved or sent anywhere. It's gone when you close this.</p>
+      <button class="sos-close" data-go="4">Next</button>
+    </div>
+
+    <div class="step" data-s="4">
+      <h2>Remember this</h2>
+      <div class="big" id="sosBig"></div>
+      <p class="strong">behind you. A hard moment doesn't take that away.</p>
+      <p>This feeling is real, and it will pass. You've got through every one before it. If you want to talk, these people are there for you.</p>
+      <div class="lines">
+        <div class="line"><b>Primrose Lodge</b><a href="tel:02039859007">0203 985 9007</a><small>Your rehab and aftercare team in Guildford.</small></div>
+        <div class="line"><b>Drinkline</b><a href="tel:03001231110">0300 123 1110</a><small>Free and confidential. Weekdays 9am to 8pm, weekends 11am to 4pm.</small></div>
+        <div class="line"><b>Samaritans</b><a href="tel:116123">116 123</a><small>Free, any time, day or night.</small></div>
+      </div>
+      <button class="sos-close" id="sosClose">I'm OK now</button>
+    </div>
   </div>
 </div>
 
@@ -513,28 +579,61 @@
     for (var i=0;i<bs.length;i++) bs[i].remove();
   };
 
-  // tough moment overlay with box breathing
-  var breathTimer = null, ph = 0;
+  // tough moment: guided steps with box breathing, grounding, writing and support
+  var breathTimer = null, tick = 0;
   var phases = [["Breathe in", true], ["Hold", true], ["Breathe out", false], ["Hold", false]];
+  function stopBreath(){ clearInterval(breathTimer); clearTimeout(breathTimer); breathTimer = null; }
   function breathStep(){
-    var p = phases[ph % 4];
+    if (tick >= 64) {
+      stopBreath();
+      el('breathText').textContent = 'Well done';
+      el('breathCnt').textContent = '✓';
+      el('breath').className = 'breath';
+      el('rounds').textContent = '4 rounds done';
+      el('breathNext').textContent = 'Next';
+      return;
+    }
+    var p = phases[Math.floor(tick / 4) % 4];
     el('breathText').textContent = p[0];
-    el('breath').className = 'breath' + (p[1] ? ' big' : '');
-    ph++;
+    el('breathCnt').textContent = 4 - (tick % 4);
+    if (tick % 4 === 0) el('breath').className = 'breath' + (p[1] ? ' big' : '');
+    el('rounds').textContent = 'Round ' + (Math.floor(tick / 16) + 1) + ' of 4';
+    tick++;
+  }
+  function startBreath(){
+    stopBreath(); tick = 0;
+    el('breath').className = 'breath';
+    el('breathNext').textContent = 'Skip';
+    el('breath').getBoundingClientRect();
+    breathTimer = setTimeout(function(){ breathStep(); breathTimer = setInterval(breathStep, 1000); }, 80);
+  }
+  function go(n){
+    var ss = document.querySelectorAll('#sos .step');
+    for (var i=0;i<ss.length;i++) ss[i].classList.toggle('on', +ss[i].getAttribute('data-s') === n);
+    var dots = document.querySelectorAll('#steps i');
+    for (var j=0;j<dots.length;j++) dots[j].classList.toggle('on', j <= n);
+    if (n === 1) startBreath(); else stopBreath();
+    el('sos').scrollTop = 0;
+  }
+  var gos = document.querySelectorAll('#sos [data-go]');
+  for (var gi=0;gi<gos.length;gi++) gos[gi].onclick = function(){ go(+this.getAttribute('data-go')); };
+  var gs = document.querySelectorAll('#sos .g');
+  for (var gj=0;gj<gs.length;gj++) gs[gj].onclick = function(){ this.classList.toggle('done'); };
+  function closeSos(){
+    el('sos').classList.remove('open');
+    stopBreath();
+    el('write').value = '';
   }
   el('sosOpen').onclick = function(){
     var d = Math.max(0, Math.floor((new Date() - START) / DAY));
-    el('sosDays').textContent = "You have " + d + (d === 1 ? " day" : " days") + " behind you. A hard moment doesn't take that away.";
+    el('sosBig').textContent = d + (d === 1 ? ' day' : ' days');
+    el('write').value = '';
+    for (var k=0;k<gs.length;k++) gs[k].classList.remove('done');
     el('sos').classList.add('open');
-    ph = 0; el('breath').className = 'breath';
-    clearInterval(breathTimer);
-    setTimeout(breathStep, 60);
-    breathTimer = setInterval(breathStep, 4000);
+    go(0);
   };
-  el('sosClose').onclick = function(){
-    el('sos').classList.remove('open');
-    clearInterval(breathTimer);
-  };
+  el('sosClose').onclick = closeSos;
+  el('sosX').onclick = closeSos;
 
   var counting = true;
   var ringEl = document.getElementById('ring'), RC = 2*Math.PI*140;
