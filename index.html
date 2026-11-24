@@ -20,23 +20,22 @@
     --ink:#fff8f0; --muted:rgba(255,248,240,.88); --card:rgba(255,255,255,.1); --line:rgba(255,255,255,.2);
   }
   @keyframes drift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-4%,3%) scale(1.08)}100%{transform:translate(0,0) scale(1)}}
-  .glow{position:fixed;border-radius:50%;pointer-events:none;z-index:0;animation:drift 18s ease-in-out infinite;will-change:transform}
-  .g1{width:760px;height:760px;left:-300px;top:-280px;background:radial-gradient(circle,rgba(255,95,158,.62) 0%,rgba(255,95,158,0) 66%)}
-  .g2{width:700px;height:700px;right:-280px;top:22%;background:radial-gradient(circle,rgba(139,108,255,.58) 0%,rgba(139,108,255,0) 66%);animation-delay:-6s}
-  .g3{width:760px;height:760px;left:-10%;bottom:-360px;background:radial-gradient(circle,rgba(255,154,60,.55) 0%,rgba(255,154,60,0) 66%);animation-delay:-12s}
-  .g4{width:560px;height:560px;right:-12%;bottom:-6%;background:radial-gradient(circle,rgba(94,231,200,.32) 0%,rgba(94,231,200,0) 66%);animation-delay:-3s}
+  .bg{position:absolute;top:0;left:0;right:0;bottom:0;overflow:hidden;pointer-events:none;z-index:0}
+  .glow{position:absolute;border-radius:50%;pointer-events:none;animation:drift 18s ease-in-out infinite}
+  .g5{width:720px;height:720px;left:-35%;top:46%;background:radial-gradient(circle,rgba(255,95,158,.42) 0%,rgba(255,95,158,0) 66%);animation-delay:-9s}
+  .g1{width:760px;height:760px;left:-300px;top:-260px;background:radial-gradient(circle,rgba(255,95,158,.62) 0%,rgba(255,95,158,0) 66%)}
+  .g2{width:700px;height:700px;right:-280px;top:12%;background:radial-gradient(circle,rgba(139,108,255,.58) 0%,rgba(139,108,255,0) 66%);animation-delay:-6s}
+  .g3{width:760px;height:760px;left:-10%;bottom:-300px;background:radial-gradient(circle,rgba(255,154,60,.55) 0%,rgba(255,154,60,0) 66%);animation-delay:-12s}
+  .g4{width:600px;height:600px;right:-30%;top:30%;background:radial-gradient(circle,rgba(94,231,200,.32) 0%,rgba(94,231,200,0) 66%);animation-delay:-3s}
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  html{background:#2a0f3d}
+  html{min-height:100%;background:linear-gradient(170deg,#1b0b2e 0%,#2a0f3d 22%,#4a1a55 52%,#5b1d5e 78%,#6e2258 100%)}
   body{
     font-family:Inter,system-ui,sans-serif;color:var(--ink);
-    background:#2a0f3d;
-    min-height:100%;display:flex;flex-direction:column;align-items:center;
+    background:transparent;position:relative;
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;
     padding:calc(28px + env(safe-area-inset-top)) calc(18px + env(safe-area-inset-right)) calc(48px + env(safe-area-inset-bottom)) calc(18px + env(safe-area-inset-left));
     overflow-x:hidden;
   }
-  body:before{content:'';position:fixed;top:-30vh;bottom:-30vh;left:0;right:0;z-index:-1;pointer-events:none;
-    background:linear-gradient(160deg,#1b0b2e 0%,var(--bg1) 35%,var(--bg2) 70%,#8a2a5a 100%)}
   .stars{position:fixed;inset:0;pointer-events:none;z-index:0}
   .wrap{position:relative;z-index:1;width:100%;max-width:520px;text-align:center}
   h1{margin-top:4px;line-height:1}
@@ -185,7 +184,7 @@
 </style>
 </head>
 <body>
-<div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div><div class="glow g4"></div>
+<div class="bg"><div class="glow g1"></div><div class="glow g2"></div><div class="glow g4"></div><div class="glow g5"></div><div class="glow g3"></div></div>
 <canvas class="stars" id="stars"></canvas>
 <div class="wrap">
   <h1><span class="t-small">Molly's</span><span class="t-big">Sober days</span></h1>
