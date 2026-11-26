@@ -311,35 +311,20 @@
   var DAY = 86400000;
   var lastDays = -1;
 
-  var milestones = [
-    {d:1, name:'Day 1'},
-    {d:7, name:'1 week'},
-    {d:14, name:'2 weeks'},
-    {d:30, name:'30 days'},
-    {d:60, name:'60 days'},
-    {d:90, name:'90 days'},
-    {d:100, name:'100 days'},
-    {d:120, name:'4 months'},
-    {d:150, name:'150 days'},
-    {d:182, name:'6 months'},
-    {d:200, name:'200 days'},
-    {d:250, name:'250 days'},
-    {d:273, name:'9 months'},
-    {d:300, name:'300 days'},
-    {d:365, name:'1 year'},
-    {d:400, name:'400 days'},
-    {d:456, name:'15 months'},
-    {d:500, name:'500 days'},
-    {d:548, name:'18 months'},
-    {d:600, name:'600 days'},
-    {d:639, name:'21 months'},
-    {d:700, name:'700 days'},
-    {d:730, name:'2 years'},
-    {d:800, name:'800 days'},
-    {d:913, name:'30 months'},
-    {d:1000, name:'1,000 days'},
-    {d:1095, name:'3 years'}
-  ];
+  var milestones = (function(){
+    var list = [], seen = {};
+    function add(d, name){ if (!seen[d]) { seen[d] = 1; list.push({d:d, name:name}); } }
+    // month and year milestones land on the 27th, worked out from the calendar
+    var months = [[12,'1 year'],[24,'2 years'],[36,'3 years'],[1,'1 month'],[2,'2 months'],[3,'3 months'],[4,'4 months'],[5,'5 months'],[6,'6 months'],[7,'7 months'],[8,'8 months'],[9,'9 months'],[10,'10 months'],[11,'11 months'],[15,'15 months'],[18,'18 months'],[21,'21 months'],[30,'30 months']];
+    for (var i=0;i<months.length;i++){
+      var md = new Date(START.getFullYear(), START.getMonth() + months[i][0], START.getDate());
+      add(Math.round((md - START) / DAY), months[i][1]);
+    }
+    var ds = [[1,'Day 1'],[7,'1 week'],[14,'2 weeks'],[30,'30 days'],[60,'60 days'],[90,'90 days'],[100,'100 days'],[150,'150 days'],[200,'200 days'],[250,'250 days'],[300,'300 days'],[400,'400 days'],[500,'500 days'],[600,'600 days'],[700,'700 days'],[800,'800 days'],[900,'900 days'],[1000,'1,000 days']];
+    for (var j=0;j<ds.length;j++) add(ds[j][0], ds[j][1]);
+    list.sort(function(a,b){ return a.d - b.d; });
+    return list;
+  })();
 
   var messages = [
     ["Fall seven times, stand up eight.", "Japanese proverb"],
@@ -406,28 +391,29 @@
 
   // hand-picked quotes for milestone days, these override the daily one
   var milestoneQuotes = {
-    90: "90 days. A full season of choosing yourself. Let that sink in.",
-    100: ["Rock bottom became the solid foundation on which I rebuilt my life.", "J.K. Rowling"],
-    120: "4 months. This isn't a phase any more. It's who you are.",
-    150: ["I am not afraid of storms, for I am learning how to sail my ship.", "Louisa May Alcott"],
-    182: "6 months. Half a year of mornings you'll remember for the rest of your life.",
-    200: ["You must do the thing you think you cannot do.", "Eleanor Roosevelt"],
-    250: "250 days. You are proof that people really can change.",
-    273: "9 months. You didn't get lucky. You got strong.",
-    300: ["Our greatest glory is not in never falling, but in rising every time we fall.", "Oliver Goldsmith"],
-    365: "1 year. 365 mornings. 365 choices. Every one of them yours. Happy sober birthday.",
-    400: ["I can be changed by what happens to me. But I refuse to be reduced by it.", "Maya Angelou"],
-    456: "15 months. The woman who started this on day 1 would be in awe of you.",
-    500: "500 days. Let that number land. Every single one was earned.",
-    548: ["Don't count the days, make the days count.", "Muhammad Ali"],
-    600: "600 days of being fully present for your own life.",
-    639: ["Courage is grace under pressure.", "Ernest Hemingway"],
-    700: "700 days. Not perfect. Not finished. Unbreakable.",
-    730: "2 years. You rebuilt something most people never even attempt.",
-    800: ["Life shrinks or expands in proportion to one's courage.", "Anaïs Nin"],
-    913: "2 and a half years. This is simply who you are now.",
-    1000: "1,000 days. Four digits. Every single one of them yours.",
-    1095: "3 years. Look at the life you built. Look at who built it."
+    '3 months': "3 months. A whole season of mornings you'll remember. Look at you go.",
+    '90 days': "90 days. A full season of choosing yourself. Let that sink in.",
+    '100 days': ["Rock bottom became the solid foundation on which I rebuilt my life.", "J.K. Rowling"],
+    '4 months': "4 months. This isn't a phase any more. It's who you are.",
+    '150 days': ["I am not afraid of storms, for I am learning how to sail my ship.", "Louisa May Alcott"],
+    '6 months': "6 months. Half a year of mornings you'll remember for the rest of your life.",
+    '200 days': ["You must do the thing you think you cannot do.", "Eleanor Roosevelt"],
+    '250 days': "250 days. You are proof that people really can change.",
+    '9 months': "9 months. You didn't get lucky. You got strong.",
+    '300 days': ["Our greatest glory is not in never falling, but in rising every time we fall.", "Oliver Goldsmith"],
+    '1 year': "1 year. 365 mornings. 365 choices. Every one of them yours. Happy sober birthday.",
+    '400 days': ["I can be changed by what happens to me. But I refuse to be reduced by it.", "Maya Angelou"],
+    '15 months': "15 months. The woman who started this on day 1 would be in awe of you.",
+    '500 days': "500 days. Let that number land. Every single one was earned.",
+    '18 months': ["Don't count the days, make the days count.", "Muhammad Ali"],
+    '600 days': "600 days of being fully present for your own life.",
+    '21 months': ["Courage is grace under pressure.", "Ernest Hemingway"],
+    '700 days': "700 days. Not perfect. Not finished. Unbreakable.",
+    '2 years': "2 years. You rebuilt something most people never even attempt.",
+    '800 days': ["Life shrinks or expands in proportion to one's courage.", "Anaïs Nin"],
+    '30 months': "2 and a half years. This is simply who you are now.",
+    '1,000 days': "1,000 days. Four digits. Every single one of them yours.",
+    '3 years': "3 years. Look at the life you built. Look at who built it."
   };
 
   function ordinal(n){var s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
@@ -436,14 +422,18 @@
     return ordinal(d.getDate())+' '+m[d.getMonth()]+' '+d.getFullYear();
   }
   function el(id){return document.getElementById(id);}
+  function midnight(t){ return new Date(t.getFullYear(), t.getMonth(), t.getDate()); }
+  function dayIndex(t){ return Math.max(0, Math.round((midnight(t) - START) / DAY)); }
+  function mDate(d){ return new Date(START.getFullYear(), START.getMonth(), START.getDate() + d); }
 
   function render(){
     var now = new Date();
     var ms = now - START;
     if (ms < 0) ms = 0;
-    var days = Math.floor(ms / DAY);
-    var rem = ms - days*DAY;
-    var h = Math.floor(rem/3600000), m = Math.floor(rem%3600000/60000), s = Math.floor(rem%60000/1000);
+    var days = dayIndex(now);
+    var today0 = midnight(now), tomorrow0 = new Date(today0.getFullYear(), today0.getMonth(), today0.getDate() + 1);
+    var rem = Math.max(0, now - today0);
+    var h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
 
     if (!counting) el('days').textContent = days;
     el('daysLabel').textContent = days === 1 ? 'day' : 'days';
@@ -455,7 +445,7 @@
     if (now.getDate() < START.getDate()) mo--;
     if (mo < 0) mo = 0;
     var anchor = new Date(START.getFullYear(), START.getMonth()+mo, START.getDate());
-    var leftDays = Math.max(0, Math.floor((now - anchor)/DAY));
+    var leftDays = Math.max(0, Math.round((today0 - anchor)/DAY));
     var lw = Math.floor(leftDays/7), ld = leftDays%7;
     var nextAnchor = new Date(START.getFullYear(), START.getMonth()+mo+1, START.getDate());
     var monthLen = Math.round((nextAnchor - anchor)/DAY);
@@ -472,12 +462,12 @@
     var ring = el('ring'), C = 2*Math.PI*140;
     ring.setAttribute('stroke-dasharray', C);
     if (next){
-      var frac = (ms/DAY - prev) / (next.d - prev);
+      var frac = (days + rem / (tomorrow0 - today0) - prev) / (next.d - prev);
       frac = Math.max(0, Math.min(1, frac));
       ring.setAttribute('stroke-dashoffset', C*(1-frac));
       el('bar').style.width = (frac*100).toFixed(1)+'%';
       var left = next.d - days;
-      var when = new Date(START.getTime() + next.d*DAY);
+      var when = mDate(next.d);
       el('nextName').textContent = next.name;
       el('nextSub').textContent = 'Arrives on ' + fmtDate(when);
       var togo = Math.max(0, when - now), p2 = function(n){ return (n < 10 ? '0' : '') + n; };
@@ -503,12 +493,14 @@
       var html = '';
       for (var j=0;j<milestones.length;j++){
         var mm = milestones[j], done = days >= mm.d;
-        var dt = new Date(START.getTime() + mm.d*DAY);
+        var dt = mDate(mm.d);
         html += '<div class="mile'+(done?' done':'')+'"><div class="dot" style="animation-delay:'+(1+j*0.06).toFixed(2)+'s">'+(done?'&#10003;':'')+'</div>'+
                 '<div class="name">'+mm.name+'</div><div class="when">'+fmtDate(dt)+'</div></div>';
       }
       el('miles').innerHTML = html;
-      var mq = milestoneQuotes[days] || messages[days % messages.length], famous = typeof mq !== 'string';
+      var todayM = null;
+      for (var t=0;t<milestones.length;t++) if (milestones[t].d === days) todayM = milestones[t];
+      var mq = (todayM && milestoneQuotes[todayM.name]) || messages[days % messages.length], famous = typeof mq !== 'string';
       el('msg').textContent = famous ? mq[0] : mq;
       el('by').textContent = famous ? mq[1] : '';
       el('by').style.display = famous ? 'block' : 'none';
@@ -560,8 +552,8 @@
     }
   }
   function showMilestone(m){
-    var when = new Date(START.getTime() + m.d*DAY);
-    var isToday = Math.floor((new Date() - START) / DAY) === m.d;
+    var when = mDate(m.d);
+    var isToday = dayIndex(new Date()) === m.d;
     el('celeM').textContent = m.name;
     el('celeD').textContent = isToday ? 'Reached today' : 'Reached on ' + fmtDate(when);
     var q = ["I’ve seen how hard you’ve worked for every one of these days. I’m so fucking proud of you Molly. You’re the strongest person I know. ❤️", "Ollie"];
@@ -626,7 +618,7 @@
     el('write').value = '';
   }
   el('sosOpen').onclick = function(){
-    var d = Math.max(0, Math.floor((new Date() - START) / DAY));
+    var d = dayIndex(new Date());
     el('sosBig').textContent = d + (d === 1 ? ' day' : ' days');
     el('write').value = '';
     for (var k=0;k<gs.length;k++) gs[k].classList.remove('done');
@@ -645,7 +637,7 @@
 
   var reduce = false;
   try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch(e){}
-  var target = Math.max(0, Math.floor((new Date() - START) / DAY));
+  var target = dayIndex(new Date());
   var hit = null;
   for (var q=0;q<milestones.length;q++) if (milestones[q].d === target) hit = milestones[q];
 
@@ -684,7 +676,7 @@
   var hiddenAt = 0;
   function freshen(){
     var away = hiddenAt ? Date.now() - hiddenAt : 0;
-    var dayNow = Math.floor((new Date() - START) / DAY);
+    var dayNow = dayIndex(new Date());
     if (away > 30*60000 || (lastDays !== -1 && dayNow !== lastDays)) location.reload();
     else render();
   }
