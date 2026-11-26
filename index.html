@@ -457,7 +457,10 @@
     var anchor = new Date(START.getFullYear(), START.getMonth()+mo, START.getDate());
     var leftDays = Math.max(0, Math.floor((now - anchor)/DAY));
     var lw = Math.floor(leftDays/7), ld = leftDays%7;
-    el('months').textContent = mo + (leftDays ? '.'+Math.round(leftDays/30.44*10) : '');
+    var nextAnchor = new Date(START.getFullYear(), START.getMonth()+mo+1, START.getDate());
+    var monthLen = Math.round((nextAnchor - anchor)/DAY);
+    var monthsExact = Math.floor((mo + leftDays/monthLen) * 10) / 10;
+    el('months').textContent = (monthsExact % 1 === 0) ? String(monthsExact) : monthsExact.toFixed(1);
     el('breakdown').innerHTML = '<b>'+mo+(mo===1?' month':' months')+'</b>, <b>'+lw+(lw===1?' week':' weeks')+'</b> and <b>'+ld+(ld===1?' day':' days')+'</b>';
 
     // next milestone
